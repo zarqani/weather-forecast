@@ -5,7 +5,7 @@ import DatePicker from "@/components/common/DatePicker";
 import Button from "@/components/common/Button";
 import { WeatherProps } from "@/types/weather.types";
 
-export default function Forecast() {
+export default function Forecast({location}: {location: {lat: number; lon: number;} | null;}) {
   const [showForecast, setShowForecast] = useState(false);
   const [forecastData, setForecastData] = useState<WeatherProps[]>([]);
   const [startDate, setStartDate] = useState(new Date());
@@ -16,10 +16,10 @@ export default function Forecast() {
     setStartDate(start);
     setEndDate(end);
   };
-
+  
   const fetchForecastData = async () => {
     try {
-      const data = await getForecast();
+      const data = await getForecast({...location});
       setForecastData(data);
     } catch (error) {
       console.error(error);
@@ -28,7 +28,7 @@ export default function Forecast() {
 
   const fetchHistoryData = async () => {
     try {
-      const data = await getHistory({ startDate, endDate } as any);
+      const data = await getHistory({ startDate, endDate, ...location } as any);
       setForecastData(data);
     } catch (error) {
       console.error(error);
@@ -41,7 +41,7 @@ export default function Forecast() {
 
   useEffect(() => {
     fetchForecastData();
-  }, []);
+  }, [location]);
 
   console.log({ forecastData });
 
