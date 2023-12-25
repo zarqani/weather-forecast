@@ -9,8 +9,8 @@ import { WeatherProps } from "@/types/weather.types";
 export default function Weather({ weather }: { weather: WeatherProps }) {
   const [location,setLocation] = useState(null);
 
-    useEffect(()=>{
-    if (lnavigator && lnavigator.geolocation) {
+    useEffect(()=>{ 
+    if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
       async (position) => {
         const lat = position.coords.latitude;
