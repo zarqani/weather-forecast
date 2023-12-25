@@ -1,14 +1,22 @@
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import WeatherIcon from "../WeatherIcon";
 import { WeatherProps } from "@/types/weather.types";
 dayjs.extend(utc);
 
-export default function WeatherCard({ data }: { data: WeatherProps }) {
-  let weather = data || {};
+export default function WeatherCard({ data, location }: { data: WeatherProps; location: {lat: number; lon: number;} | null; }) {
+  const [weather, setWeather] = useState(data || {});
+  
+  const fetchWeather = async () => {
+      const newData = await getWeather(location);
+      setWeather(newData);
+  }
 
-  console.log({ weather });
-  // max-w-[60vw]
+  useEffect(() => {
+    if(location) fetchWeather();
+  }, [location]);
+  
   return (
     <>
       <div className="cursor-pointer items-center m-4 px-8 py-5 rounded-xl w-full bg-blue-100">
