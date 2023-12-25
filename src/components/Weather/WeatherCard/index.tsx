@@ -3,13 +3,14 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import WeatherIcon from "../WeatherIcon";
 import { WeatherProps } from "@/types/weather.types";
+import { getWeather } from "@/api/weather";
 dayjs.extend(utc);
 
 export default function WeatherCard({ data, location }: { data: WeatherProps; location: {lat: number; lon: number;} | null; }) {
   const [weather, setWeather] = useState(data || {});
   
   const fetchWeather = async () => {
-      const newData = await getWeather(location);
+      const newData = await getWeather({...location});
       setWeather(newData);
   }
 
